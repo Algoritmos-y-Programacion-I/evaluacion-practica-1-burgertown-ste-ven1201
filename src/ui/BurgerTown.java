@@ -9,7 +9,6 @@ public class BurgerTown {
     public static int[] unidades;
 
     public static void main(String[] args) {
-
         inicializarGlobales();
         menu();
     }
@@ -17,12 +16,10 @@ public class BurgerTown {
     /**
      * Descripcion: Este metodo se encarga de iniciar las variables globales
      * pre: El Scanner reader debe estar declarado
-     * pos: l Scanner reader queda inicializado
+     * pos: El Scanner reader queda inicializado
     */
     public static void inicializarGlobales() {
-
         reader = new Scanner(System.in);
-
     }
 
     /**
@@ -31,7 +28,6 @@ public class BurgerTown {
      * pre: El arreglo precios debe estar inicializado
     */
     public static void menu() {
-
         System.out.println("Bienvenido a BurgerTown!");
 
         establecerCantidadVendida();
@@ -39,7 +35,6 @@ public class BurgerTown {
         boolean salir = false;
 
         do {
-
             System.out.println("\nMenu Principal:");
             System.out.println("1. Solicitar precios ($) y cantidades de cada plato vendido en el dia");
             System.out.println("2. Calcular la cantidad total de platos vendidos en el dia");
@@ -55,78 +50,117 @@ public class BurgerTown {
                     solicitarDatos();
                     break;
                 case 2:
-                    System.out.println("\nLa cantidad total de platos vendidos en el dia fue de: "+calcularTotalPlatosVendidos());
+                    System.out.println("\nLa cantidad total de platos vendidos en el dia fue de: " + calcularTotalPlatosVendidos());
                     break;
                 case 3:
-                    System.out.println("\nEl precio promedio de los platos vendidos en el dia fue de: "+calcularPrecioPromedio());
+                    System.out.println("\nEl precio promedio de los platos vendidos en el dia fue de: " + calcularPrecioPromedio());
                     break;
                 case 4:
-                    System.out.println("\nLas ventas totales (dinero recaudado) durante el dia fueron: "+calcularVentasTotales());
+                    System.out.println("\nLas ventas totales (dinero recaudado) durante el dia fueron: " + calcularVentasTotales());
                     break;
                 case 5:
                     System.out.println("\nDigite el limite minimo de ventas a analizar");
                     double limite = reader.nextDouble();
-                    System.out.println("\nDe las "+precios.length+" referencias vendidas en el dia, "+consultarPlatosSobreLimite(limite)+" superaron el limite minimo de ventas de "+limite);
+                    System.out.println("\nDe las " + precios.length + " referencias vendidas en el dia, " + consultarPlatosSobreLimite(limite) + " superaron el limite minimo de ventas de " + limite);
                     break;
                 case 6:
                     System.out.println("\nGracias por usar nuestros servicios!");
                     salir = true;
                     reader.close();
                     break;
-
                 default:
                     System.out.println("\nOpcion invalida, intenta nuevamente.");
                     break;
             }
 
         } while (!salir);
-
     }
 
     /**
-     * Descripcion: Este metodo se encarga de preguntar al usuario el numero de platos diferentes 
+     * Descripcion: Este metodo se encarga de preguntar al usuario el numero de platos diferentes
      * vendidos en el dia e inicializa con ese valor los arreglos encargados de almacenar precios y cantidades
      * pre: El Scanner reader debe estar inicializado
      * pre: Los arreglos precios y unidades deben estar declarados
      * pos: Los arreglos precios y unidades quedan inicializados
      */
     public static void establecerCantidadVendida() {
-
         System.out.println("\nDigite el numero de platos diferentes vendidos en el dia ");
         int platos = reader.nextInt();
 
         precios = new double[platos];
         unidades = new int[platos];
-
     }
 
-    public static void solicitarDatos(){
+    /**
+     * Descripcion: Solicita al usuario los precios y las cantidades de cada plato vendido
+     * pre: Los arreglos precios y unidades deben estar inicializados
+     */
+    public static void solicitarDatos() {
+        for (int i = 0; i < precios.length; i++) {
+            System.out.println("\nDigite el precio del plato "+(i+1)+": ");
+            precios[i] = reader.nextDouble();
 
-     
+            System.out.println("Digite la cantidad vendida del plato " +(i+1)+": ");
+            unidades[i] = reader.nextInt();
+        }
     }
 
-    public static int calcularTotalPlatosVendidos(){
-
-        return 0;
-
+    /**
+     * Descripcion: Calcula la cantidad total de platos vendidos
+     * pre: Los arreglos unidades deben estar inicializados
+     * @return La cantidad total de platos vendidos
+     */
+    public static int calcularTotalPlatosVendidos() {
+        int total = 0;
+        for (int unidad : unidades) {
+            total += unidad;
+        }
+        return total;
     }
 
-    public static double calcularPrecioPromedio(){
+    /**
+     * Descripcion: Calcula el precio promedio de los platos vendidos
+     * pre: Los arreglos precios y unidades deben estar inicializados
+     * @return El precio promedio de los platos vendidos
+     */
+    public static double calcularPrecioPromedio() {
+        double sumaPrecios = 0;
+        int totalPlatos = 0;
 
-        return 0;
+        for (int i = 0; i < precios.length; i++) {
+            sumaPrecios += precios[i] * unidades[i];
+            totalPlatos += unidades[i];
+        }
 
+        return totalPlatos > 0 ? sumaPrecios / totalPlatos : 0;
     }
 
-    public static double calcularVentasTotales(){
-
-        return 0;
-
+    /**
+     * Descripcion: Calcula las ventas totales durante el dia
+     * pre: Los arreglos precios y unidades deben estar inicializados
+     * @return Las ventas totales durante el dia
+     */
+    public static double calcularVentasTotales() {
+        double totalVentas = 0;
+        for (int i = 0; i < precios.length; i++) {
+            totalVentas += precios[i] * unidades[i];
+        }
+        return totalVentas;
     }
 
-    public static int consultarPlatosSobreLimite(double limite){
-
-        return 0;
-
+    /**
+     * Descripcion: Consulta el numero de platos que superan un limite minimo de ventas
+     * pre: Los arreglos precios y unidades deben estar inicializados
+     * @param limite El limite minimo de ventas
+     * @return El numero de platos que superan el limite minimo de ventas
+     */
+    public static int consultarPlatosSobreLimite(double limite) {
+        int contador = 0;
+        for (int i = 0; i < precios.length; i++) {
+            if (precios[i] * unidades[i] > limite) {
+                contador++;
+            }
+        }
+        return contador;
     }
-
 }
